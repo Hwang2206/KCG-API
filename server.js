@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -25,6 +25,5 @@ app.listen(port, async () => {
     console.error("Unable to connect to the database:", error);
   }
 });
-
 
 

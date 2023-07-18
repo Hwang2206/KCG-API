@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "sa",
+    "username": "root",
     "password": "cnpmnhom6",
-    "database": "KCG_Database",
+    "database": "kcg_database",
     "host": "127.0.0.1",
-    "dialect": "mssql"
+    "dialect": "mysql"
   },
   "test": {
-    "username": "sa",
+    "username": "root",
     "password": null,
-    "database": "KCG_Database",
+    "database": "kcg_database",
     "host": "127.0.0.1",
-    "dialect": "mssql"
+    "dialect": "mysql"
   },
   "production": {
-    "username": "sa",
+    "username": "root",
     "password": null,
-    "database": "KCG_Database",
+    "database": "kcg_database",
     "host": "127.0.0.1",
-    "dialect": "mssql"
+    "dialect": "mysql"
   }
 }
