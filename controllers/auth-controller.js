@@ -2,6 +2,7 @@ require("dotenv").config();
 const moment = require("moment/moment");
 const { Users } = require("../models");
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 class AuthController {
   static async login(req, res) {
     try {
@@ -29,7 +30,7 @@ class AuthController {
           user_email: foundUser.user_email,
           user_type: foundUser.user_type,
           user_active: foundUser.user_active,
-          createdAt: foundUser.createdAt
+          createdAt: foundUser.createdAt,
         };
         const token = jwt.sign(tokenData, jwtSecretKey, {
           expiresIn: "72000s",
@@ -59,17 +60,17 @@ class AuthController {
 
       const oldUser = await Users.findOne({
         where: {
-          user_phone: phone,
+          [Op.or]: [{ user_phone: phone }, { user_email: email }],
         },
       });
 
       if (oldUser) {
         res.status(403).send({
-          message: 'failed',
-          data: "User is already exits!"
+          message: "failed",
+          data: "User is already exits!",
         });
       } else {
-        const newUser = { 
+        const newUser = {
           user_name: name,
           user_phone: phone,
           user_email: email,
@@ -77,7 +78,7 @@ class AuthController {
           user_type: false,
           user_active: true,
           createdAt: moment().utcOffset(-420),
-          updatedAt: moment().utcOffset(-420)
+          updatedAt: moment().utcOffset(-420),
         };
         await Users.create(newUser);
         res.status(200).send({

@@ -75,6 +75,37 @@ class UserController {
       });
     }
   }
+  static async updateInfoByUser(req, res) {
+    try {
+      const { id } = req.params;
+      const { name, phone, email, password, type, active } = req.body;
+
+      const foundUser = await Users.findOne({
+        where: {
+          user_id: id,
+        },
+      });
+
+      await foundUser.update({
+        user_name: name,
+        user_phone: phone,
+        user_email: email,
+        user_password: password,
+        user_type: type,
+        user_active: active,
+      });
+
+      res.status(200).send({
+        message: "success",
+        data: "Update Info User Successfully !",
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: "error",
+        data: "Lack of parameter",
+      });
+    }
+  }
   static async deleteByID(req, res) {
     try {
       const { id } = req.params;
