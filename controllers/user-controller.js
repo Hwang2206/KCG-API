@@ -97,7 +97,7 @@ class UserController {
 
       res.status(200).send({
         message: "success",
-        data: "Update Info User Successfully !",
+        data: foundUser,
       });
     } catch (error) {
       res.status(500).send({

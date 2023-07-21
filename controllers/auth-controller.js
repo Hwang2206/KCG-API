@@ -1,6 +1,6 @@
 require("dotenv").config();
 const moment = require("moment/moment");
-const { Users } = require("../models");
+const { Users, Memberships } = require("../models");
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 class AuthController {
@@ -80,11 +80,29 @@ class AuthController {
           createdAt: moment().utcOffset(-420),
           updatedAt: moment().utcOffset(-420),
         };
-        await Users.create(newUser);
-        res.status(200).send({
-          message: "success",
-          data: newUser,
-        });
+        await Users.create(newUser); 
+        const foundUser = await Users.findOne({
+          where: {
+            user_phone: newUser.user_phone
+          }
+        })
+        if(foundUser) {
+          await Memberships.create({
+            user_id: foundUser.user_id,
+            expiration_date: Date.now(),
+            register_date: Date.now()
+          })
+          res.status(200).send({
+            message: "success",
+            data: newUser,
+          });
+        }else {
+          res.status(404).send({
+            message: "failed",
+            data: "Cannot create membership",
+          });
+        }
+        
       }
     } catch (err) {
       res.status(500).send({
